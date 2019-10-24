@@ -1,0 +1,1 @@
+An API server to perform crud operations on a widget model.

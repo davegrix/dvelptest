@@ -1,0 +1,176 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://localhost:3000'
+    description: Dev Server
+info:
+  description: Dvelp
+  version: 1.0.0
+  title: Dvelp
+  contact:
+    email: dave@dgrix.com
+paths:
+  /get200:
+    get:
+      x-router-controller: security
+      summary: check connection
+      description: returns a 200 when the endpoint is hit, for checking API is up and running
+      operationId: returnOK
+      tags:
+        - General
+      responses:
+        '200':
+          description: OK
+  '/widget/:widgetID':
+    get:
+      x-router-controller: widgets
+      summary: get widget
+      description: fetches an existing widget by widgetID
+      operationId: fetch
+      tags:
+        - Widgets
+      parameters:
+        - in: path
+          name: widgetID
+          schema:
+            type: number
+          required: true
+      responses:
+        '200':
+          description: returns an object of widgetModel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/widgetModel'
+        '400':
+          description: returns an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      x-router-controller: widgets
+      summary: update a widget
+      description: updates a wiudget based on the widgetID
+      operationId: update
+      tags:
+        - Widgets
+      parameters:
+        - in: path
+          name: widgetID
+          schema:
+            type: number
+          required: true
+      requestBody:
+        description: describes an widget entity that has changes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/widgetModel'
+      responses:
+        '200':
+          description: returns an object of widgetModel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/widgetModel'
+        '400':
+          description: returns an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      x-router-controller: widgets
+      summary: delete widget
+      description: deletes a widget based on its id
+      operationId: delete
+      tags:
+        - Widgets
+      parameters:
+        - in: path
+          name: widgetID
+          schema:
+            type: number
+          required: true
+      responses:
+        '204':
+          description: model deleted
+        '400':
+          description: returns an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+        #     delete:
+  /widget/add/:
+    post:
+      x-router-controller: widgets
+      summary: add widget
+      description: adds a new widget and returns it
+      operationId: add
+      tags:
+        - Widgets
+      requestBody:
+        description: describes an widget entity that has changes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/widgetModel'
+      responses:
+        '201':
+          description: returns an object of the new widgetModel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/widgetModel'
+        '400':
+          description: returns an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    error:
+      type: object
+      required:
+        - atFunction
+        - errorMessage
+      properties:
+        atFunction:
+          type: string
+        errorMessage:
+          type: string
+    widgetModel:
+      type: object
+      properties:
+        widgetId:
+          type: number
+        brandColor1:
+          type: string
+        brandColor2:
+          type: string
+        brandColor1Text:
+            type: string
+        brandColor2Text:
+           type: string
+        headerColor:
+           type: string
+        lightText:
+          type: string
+        darkText:
+          type: string
+        entryPointBackground:
+          type: string
+        companyName:
+          type: string
+        welcomeMessage:
+          type: string
+
+
+
+
+
